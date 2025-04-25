@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arbin Chaudhary | Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css"/>
+<style>
+.hero {
+  background-image: url('arbin.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white; /* Base text color */
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero-content {
+  padding: 20px;
+  display: inline-block;
+  /* Add text shadow for better contrast */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Optional: Add a light text color if needed */
+.hero-content h1 {
+  color: #ffffff; /* Pure white */
+}
+
+.hero-content p {
+  color: #f0f0f0; /* Off-white */
+}
+
+/* Contact Section Styles */
+.contact {
+  text-align: center;
+  padding: 50px 20px; /* Add padding around the entire contact section */
+}
+
+.social-links {
+  margin: 20px 0;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+  color: white;
+  background-color: #333;
+  border-radius: 50%;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background-color: #555;
+  transform: translateY(-3px);
+}
+
+form {
+  max-width: 600px;
+  margin: 20px auto; /* Add margin above and below the form */
+  padding: 20px;
+  border: 1px solid #ddd; /* Optional: Add a border to the form */
+  border-radius: 5px; /* Optional: Add rounded corners to the form */
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+</style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Arbin Chaudhary</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li> <!-- Added Home link -->
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+    </nav>
+  </header>
+
+  <section id="home" class="hero"> <!-- Home section with hero class -->
+    <div class="hero-content">
+      <h1>Hello, I'm <span>Arbin Chaudhary</span></h1>
+      <p>Student at Kathmandu University | Future Geomatics Engineer| Ghorahi-Dang, Nepal</p>
+
+    </div>
+  </section>
+
+  <section id="about" class="about section">
+    <h2>About Me</h2>
+    <div class="about-container">
+      <img src="arbin.jpg" alt="Arbin Chaudhary Profile Photo" class="profile-photo">
+      <div class="about-details">
+        <p>
+          I am Arbin Chaudhary from Dang, Nepal, currently studying at Kathmandu University. I am passionate about Surveying, Mapping and Web Development.
+        </p>
+        <a href="Arbin CV.pdf" download class="btn">Download CV</a>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="skills" class="skills section">
+    <h2>Skills</h2>
+    <div class="skills-container">
+      <div class="skill-card">
+        <li>HTML5, CSS3, JavaScript</li>
+      </div>
+      <div class="skill-card">
+        <li>Responsive Web Design</li>
+      </div>
+      <div class="skill-card">
+        <li>Surveying & Mapping</li>
+      </div>
+      <div class="skill-card">
+        <li>Basic Graphic Design</li>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="projects section">
+    <h2>Projects</h2>
+    <div class="project-list">
+      <div class="project-card">
+        <h3>Suitability Site Selection:</h3>
+        <p>Suitability site selection ranks locations based on criteria like demographics, access, and environment to find the best site.</p>
+        <a href="GIS_Arbin-Chaudhary_07.pdf" download class="btn">Project Report</a>
+      </div>
+      <div class="project-card">
+        <h3>pgRouting : Finding Shortest Route using QGIS:</h3>
+        <p>Use network data and plugins like ORS Tools to calculate the shortest route between two points easily.</p>
+        <a href="Arbin_Chaudhary_07_Mini_Project_SDBMS.pdf" download class="btn">Project Report</a>
+      </div>
+      <div class="project-card">
+        <h3>Thematic Mapping on different theme:</h3>
+        <p>Thematic maps display data themes like population or land use using colors, symbols, dots, or heat to show spatial patterns.</p>
+        <a href="Mini_Project Report.pdf" download class="btn">Project Report</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact section">
+    <h2>Contact</h2>
+    <div class="social-links">
+      <a href="mailto:arbinchaudhary.0006@gmail.com" aria-label="Gmail">
+        <i class="fa fa-envelope"></i>
+      </a>
+      <a href="https://www.facebook.com/ArbindAaryanChaudhary" target="_blank" aria-label="Facebook">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://www.instagram.com/arbind_aaryan_chy?igsh=cnF4eGF3ejNhOW8y" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="tel:+9779866202247" aria-label="Phone">
+        <i class="fas fa-phone"></i>
+      </a>
+    </div>
+    <form>
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Arbin Chaudhary. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const aboutDetails = document.querySelector('.about-details');
+      if (!aboutDetails) return;
+
+      function onScroll() {
+        const rect = aboutDetails.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.7) { // Trigger when 90% of viewport height
+          aboutDetails.classList.add('visible');
+          window.removeEventListener('scroll', onScroll);
+        }
+      }
+
+      window.addEventListener('scroll', onScroll);
+      onScroll(); // Check on load in case already in view
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const skillCards = document.querySelectorAll('.skill-card');
+      const projectCards = document.querySelectorAll('.project-card');
+
+      function checkVisibility() {
+        const windowHeight = window.innerHeight;
+
+        // Check visibility for skill cards
+        skillCards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < windowHeight - 100) {
+            card.classList.add('visible');
+          }
+        });
+
+        // Check visibility for project cards
+        projectCards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < windowHeight - 50) {
+            card.classList.add('visible');
+          }
+        });
+      }
+
+      // Add scroll event listener
+      window.addEventListener('scroll', checkVisibility);
+      checkVisibility(); // Check on load in case already in view
+    });
+  </script>
+</body>
+</html>
