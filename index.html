@@ -2,98 +2,735 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Arbin Chaudhary | Portfolio</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css"/>
-<style>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f0f0f0;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #333;
+      color: #fff;
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    section {
+      padding: 2rem;
+    }
+
+    #map {
+      height: 400px;
+      margin-bottom: 1rem;
+    }
+
+    .tools button {
+      margin: 5px;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .tools button:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+
+    .route-btn {
+      background-color: #28a745;
+      margin-top: 6px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+      border: none;
+      display: block;
+      width: 100%;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .route-btn:hover {
+      background-color: #1e7e34;
+    }
+	
+	.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  color: var(--main-color);
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: space-between;
+    background: var(--secondary-bg);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 180px;
+    padding: 1rem;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: allow;
+  }
+}
+
+	
+	
+	
+	
+	
+:root {
+  --main-color: #00abf0;
+  --bg-color: #081b29;
+  --text-color: #ededed;
+  --secondary-bg: #112e42;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+header {
+  max-height: 60px;  /* or a value you like */
+}
+
+header {
+  background: var(--secondary-bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 50px; /* Fixed header height */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center items vertically */
+  height: 80%;         /* Match header height */
+  padding: 0 5rem;    /* Horizontal padding only */
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  justify-content: center; /* aligns links to the right */
+  align-items: center;       /* vertically center the links */
+}
+
+
+.nav-links li {
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.05rem;
+  display: inline-block;
+  align-items: flex-direction;
+  height: 100%;
+  transition: color 0.3s;
+  padding: 5 10px; /* no extra vertical padding */
+  margin: 2px;
+}
+
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: var(--secondary-bg);
+    position: absolute;
+    top: 80px;
+    right: 0;
+    width: 180px;
+  }
+  .nav-links.active {
+    display: flex;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
+
 .hero {
-  background-image: url('arbin.jpg');
-  background-size: cover;
-  background-position: center;
-  color: white; /* Base text color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  background: url('arbin.jpg') no-repeat center center/cover;
+  animation: fadeIn 1.5s;
   text-align: center;
-  padding: 100px 20px;
 }
 
 .hero-content {
-  padding: 20px;
-  display: inline-block;
-  /* Add text shadow for better contrast */
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-/* Optional: Add a light text color if needed */
-.hero-content h1 {
-  color: #ffffff; /* Pure white */
-}
-
-.hero-content p {
-  color: #f0f0f0; /* Off-white */
-}
-
-/* Contact Section Styles */
-.contact {
   text-align: center;
-  padding: 50px 20px; /* Add padding around the entire contact section */
 }
 
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-content span {
+  color: var(--main-color);
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.5rem;
+  background: var(--main-color);
+  color: #fff;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #007ca6;
+}
+
+.section {
+  padding: 3rem 2rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--main-color);
+  text-align: center;
+}
+
+.skills ul, .project-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* Skills Section Styles */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem; /* Space between skill cards */
+  justify-content: center; /* Center the skill cards */
+}
+
+.skill-card {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+  border: 2px solid var(--main-color); /* Border with main color */
+  border-radius: 12px; /* Rounded corners */
+  padding: 1.5rem; /* Padding inside the card */
+  width: 200px; /* Fixed width for consistency */
+  text-align: center; /* Center text */
+  opacity: 0; /* Start hidden */
+  transform: translateY(30px); /* Start slightly below */
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease; /* Smooth transition */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.skill-card.visible {
+  opacity: 1;
+  transform: translateY(0); /* previously: 1 */
+}
+
+
+/* Hover Effect */
+.skill-card:hover {
+  transform: translateY(-5px); /* Slightly lift on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 1); /* Increase shadow on hover */
+  background: rgba(255, 255, 255, 0.8); /* Darker background on hover */
+  transition: transform 0.3s ease, box-shadow 1s ease, background 1s ease; /* Smooth hover transition */
+}
+
+/* Text Styles */
+.skills h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--main-color);
+  text-align: center;
+}
+
+.project-card {
+  background: var(--secondary-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 250px;
+  transition: all 0.3s ease-in-out;
+  animation: fadeInUp 1s;
+}
+
+.project-card:hover {
+  transform: translateY(-5px) scale(1.03);
+}
+.project-card {
+  background: var(--secondary-bg);
+  padding: 2.5rem;       /* Increased padding for more space */
+  border-radius: 16px;   /* Slightly bigger rounding for a modern look */
+  width: 450px;          /* Increased width */
+  transition: transform 0.8s, box-shadow 0.8s;
+  animation: fadeInUp 5s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-card:hover {
+  transform: translateY(-10px) scale(1.05); /* Slightly bigger hover scale */
+  box-shadow: 0 15px 28px rgba(0, 0, 0, 0.2);
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+  margin: auto;
+}
+
+input, textarea {
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: none;
+  background: #fff;
+  color: #222;
+  font-size: 1rem;
+}
+
+footer {
+  text-align: center;
+  padding: 1.2rem 0;
+  background: var(--secondary-bg);
+  color: #aaa;
+  font-size: 1rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.about-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.profile-photo {
+  width: 700px;
+  height: 450px;
+  object-fit: cover;
+  border-radius: 16px; /* Square with slightly rounded corners */
+  display: block;
+  margin: 0 auto;
+  /* No border */
+  box-shadow: 0 6px 32px rgba(0,0,0,0.10);
+  background: #f4f4f4;
+}
+
+.about-details {
+  font-size: 20px;
+  max-width: 700px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(60px);
+  visibility: hidden;
+  transition: opacity 0.8s ease, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.8s;
+  will-change: opacity, transform, visibility;
+}
+
+.about-details.visible {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+}
+
+/* Responsive: smaller photo on small screens */
+@media (max-width: 600px) {
+  .profile-photo {
+    width: 180px;
+    height: 180px;
+  }
+  .about-details {
+    font-size: 18px;
+    padding: 0 8px;
+  }
+}
+body {
+  background: #081b29;
+  color: #ededed;
+}
+
+
+
+
+
+.domain-link {
+  margin-top: 1.5rem;
+  text-align: center;       /* Center the text */
+  font-size: 1.1rem;
+  color: var(--main-color);
+  word-break: break-word;   /* Better word breaking for long URLs */
+  display: block;
+  width: 100%;              /* Full width container */
+}
+
+.domain-link a {
+  color: var(--main-color);
+  text-decoration: underline;
+  transition: color 0.3s;
+  display: inline-block;    /* Keep the link inline but allow padding/margin */
+}
+
+.domain-link a:hover {
+  color: #007ca6;
+}
+
+@media (max-width: 600px) {
+  .domain-link {
+    font-size: 1rem;
+    padding: 0 8px;
+  }
+}
 .social-links {
-  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 2rem;
 }
 
 .social-links a {
-  display: inline-flex;
+  background: #112e42;
+  color: #00abf0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin: 0 10px;
-  color: white;
-  background-color: #333;
-  border-radius: 50%;
-  font-size: 18px;
-  transition: all 0.3s ease;
+  font-size: 1.7rem;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }
 
 .social-links a:hover {
-  background-color: #555;
-  transform: translateY(-3px);
+  background: #00abf0;
+  color: #fff;
+  transform: translateY(-4px) scale(1.08);
+}
+
+/* Smooth color and scale on hover */
+.button {
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.button:hover {
+  background-color: #00abf0;
+  transform: scale(1.05);
+}
+
+/* Fade effect */
+.fade {
+  transition: opacity 0.4s ease-in-out;
+}
+.fade:hover {
+  opacity: 0.7;
+}
+.social-links a i.fa-envelope { color: #D44638; }    /* Gmail red */
+.social-links a i.fa-facebook-f { color: #3b5998; }  /* Facebook blue */
+.social-links a i.fa-instagram { color: #e4405f; }   /* Instagram pink */
+.social-links a i.fa-phone { color: #25d366; }       /* WhatsApp green or pick a phone color */
+
+.contact .social-links {
+  margin-bottom: 2rem; /* Add space below the icons */
+}
+ 
+.skills-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.skill-item {
+  background: var(--secondary-bg);
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.skill-item:hover {
+  transform: scale(1.02);
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.skill-bar {
+  background: rgba(255,255,255,0.1);
+  height: 14px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.skill-progress {
+  background: var(--main-color);
+  height: 100%;
+  width: 0;
+  border-radius: 6px;
+  transition: width 1.2s ease-in-out;
+}
+.skills-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.skill-item {
+  background: var(--secondary-bg);
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.skill-header {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.skill-bar {
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-progress {
+  background: var(--main-color);
+  height: 100%;
+  width: 0;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  transition: width 1.5s ease-in-out;
+}
+
+.skill-label {
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: bold;
+  white-space: nowrap;
 }
 
 form {
-  max-width: 600px;
-  margin: 20px auto; /* Add margin above and below the form */
-  padding: 20px;
-  border: 1px solid #ddd; /* Optional: Add a border to the form */
-  border-radius: 5px; /* Optional: Add rounded corners to the form */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+  margin: 2rem auto;  /* Auto margin left and right centers it */
+  padding: 0 1rem;    /* Small horizontal padding for smaller screens */
 }
 
-input,
-textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+
+
+.leaflet-routing-container {
+  background-color: #22272e !important;  /* Dark charcoal */
+  color: #d0d8dc !important;             /* Soft light gray text */
+  border: 1px solid #1db9c3;             /* Calm teal border */
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  max-width: 320px;
 }
-</style>
+
+/* Headings */
+.leaflet-routing-container h2,
+.leaflet-routing-alt h3 {
+  color: #1db9c3 !important; /* Teal accent */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Instructions */
+.leaflet-routing-instruction {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 8px 12px;
+  color: #e4e8ea;
+  font-size: 0.95rem;
+}
+
+/* Alternate routes background */
+.leaflet-routing-alt {
+  background-color: #2e383f !important;  /* Slightly lighter dark */
+  border-top: 1px solid #1db9c3;
+  color: #b8c4c9;
+}
+
+/* Highlight selected alternate */
+.leaflet-routing-alt.leaflet-routing-alt-selected {
+  background-color: #1f2a32 !important;
+}
+
+/* Links */
+.leaflet-routing-container a {
+  color: #1db9c3 !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.leaflet-routing-container a:hover {
+  color: #b0e6eb !important;
+}
+
+/* Collapse button */
+.leaflet-routing-container .leaflet-routing-collapse-btn {
+  background: #1db9c3 !important;
+  color: #22272e !important;
+  border: none;
+  border-radius: 4px;
+}
+
+/* Input fields */
+.leaflet-routing-geocoders input {
+  background: #2e383f !important;
+  color: #e4e8ea;
+  border: 1px solid #1db9c3;
+  border-radius: 4px;
+}
+
+
+#map {
+  height: 500px;  /* increase height */
+  width: 100%;    /* full container width */
+  max-width: 2500px; /* optional max width */
+  margin: auto;     /* center horizontally if max-width is set */
+  border-radius: 12px; /* optional for nice rounded corners */
+  box-shadow: 0 0px 12px rgba(0,0,0,0.2);
+}
+
+
+.tools {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
+  </style>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">Arbin Chaudhary</div>
-      <ul class="nav-links">
-        <li><a href="#home">Home</a></li> <!-- Added Home link -->
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-    </nav>
-  </header>
+<header>
+  <nav class="navbar">
+    <div class="logo">Arbin Chaudhary</div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#spatial-tools">Spatial Tools</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+  </nav>
+</header>
+
 
   <section id="home" class="hero"> <!-- Home section with hero class -->
     <div class="hero-content">
@@ -117,23 +754,66 @@ textarea {
   </section>
 
   
-  <section id="skills" class="skills section">
-    <h2>Skills</h2>
-    <div class="skills-container">
-      <div class="skill-card">
-        <li>HTML5, CSS3, JavaScript</li>
-      </div>
-      <div class="skill-card">
-        <li>Responsive Web Design</li>
-      </div>
-      <div class="skill-card">
-        <li>Surveying & Mapping</li>
-      </div>
-      <div class="skill-card">
-        <li>Basic Graphic Design</li>
+<section id="skills" class="skills section">
+  <h2>Skills</h2>
+  <div class="skills-columns">
+    <div class="skill-item">
+      <div class="skill-header">HTML5</div>
+      <div class="skill-bar">
+        <div class="skill-progress" data-percent="90%">
+          <span class="skill-label">90%</span>
+        </div>
       </div>
     </div>
-  </section>
+
+    <div class="skill-item">
+      <div class="skill-header">CSS3</div>
+      <div class="skill-bar">
+        <div class="skill-progress" data-percent="85%">
+          <span class="skill-label">85%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-header">JavaScript</div>
+      <div class="skill-bar">
+        <div class="skill-progress" data-percent="75%">
+          <span class="skill-label">75%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-header">Responsive Design</div>
+      <div class="skill-bar">
+        <div class="skill-progress" data-percent="80%">
+          <span class="skill-label">80%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-header">Surveying & Mapping</div>
+      <div class="skill-bar">
+        <div class="skill-progress" data-percent="88%">
+          <span class="skill-label">88%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-item">
+      <div class="skill-header">Graphic Design</div>
+      <div class="skill-bar">
+        <div class="skill-progress" data-percent="70%">
+          <span class="skill-label">70%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
   <section id="projects" class="projects section">
     <h2>Projects</h2>
@@ -156,6 +836,19 @@ textarea {
     </div>
   </section>
 
+ <section id="spatial-tools" class="section">
+    <h2>Spatial Tools</h2>
+  <div id="map" style="height: 400px; width: 100%;"></div>
+
+    <div class="tools">
+      <button onclick="runBuffer()">Buffer Around Kathmandu University</button>
+      <button onclick="showHospitals()">Show Hospitals</button>
+      <button onclick="showPharmacies()">Show Pharmacies</button>
+      <button onclick="showNearbyHotels()">Show Nearby Hotels</button>
+      <button onclick="clearMap()">Clear Map</button>
+    </div>
+  </section>
+  
   <section id="contact" class="contact section">
     <h2>Contact</h2>
     <div class="social-links">
@@ -180,56 +873,288 @@ textarea {
     </form>
   </section>
 
+
   <footer>
-    <p>&copy; 2025 Arbin Chaudhary. All rights reserved.</p>
+    <p>&copy; 2025 Arbin Chaudhary</p>
   </footer>
+  <script>
+  // Responsive Navbar Toggle
+const menuToggle = document.getElementById('menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+menuToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+});
+
+// Smooth Scroll (optional, for animation)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+    navLinks.classList.remove('active');
+  });
+});
+document.addEventListener("DOMContentLoaded", function() {
+  const details = document.querySelector('.about-details');
+  function checkVisibility() {
+    const rect = details.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 100) {
+      details.classList.add('visible');
+      window.removeEventListener('scroll', checkVisibility);
+    }
+  }
+  window.addEventListener('scroll', checkVisibility);
+  checkVisibility();
+});
+document.addEventListener("DOMContentLoaded", function () {
+  const skillCards = document.querySelectorAll('.skill-card');
+  skillCards.forEach((card) => {
+    card.classList.add('visible');
+  });
+});
+
+</script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const aboutDetails = document.querySelector('.about-details');
-      if (!aboutDetails) return;
+    const map = L.map('map').setView([27.620, 85.538], 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(map);
 
-      function onScroll() {
-        const rect = aboutDetails.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.7) { // Trigger when 90% of viewport height
-          aboutDetails.classList.add('visible');
-          window.removeEventListener('scroll', onScroll);
-        }
+    const kuPoint = turf.point([85.538, 27.620]);
+    const kuCoords = [27.620, 85.538];
+
+    const hospitals = [
+      { name: 'Kavre District Hospital', coords: [27.622, 85.541] },
+      { name: 'Shree Harsha Hospital', coords: [27.627, 85.546] },
+      { name: 'Dhulikhel Hospital', coords: [27.622, 85.548] },
+    ];
+
+    const pharmacies = [
+      { name: 'Green Life Pharmacy', coords: [27.619, 85.539] },
+      { name: 'Dhulikhel Medical Hall', coords: [27.620, 85.545] },
+      { name: 'KU Pharmacy', coords: [27.621, 85.5425] },
+    ];
+
+    const hotels = [
+      { name: 'Himalayan Horizon Hotel', coords: [27.6215, 85.541] },
+      { name: 'Dhulikhel Lodge Resort', coords: [27.6195, 85.546] },
+      { name: 'Hotel Mirabel', coords: [27.6208, 85.5445] },
+    ];
+
+    let drawnLayers = L.layerGroup().addTo(map);
+    let routingControl = null;
+
+    function runBuffer() {
+      clearMap();
+      const buffer = turf.buffer(kuPoint, 0.5, { units: 'kilometers' });
+      L.geoJSON(buffer, { color: 'blue' }).addTo(drawnLayers);
+      L.marker(kuCoords)
+        .addTo(drawnLayers)
+        .bindPopup('<b>Kathmandu University</b>')
+        .openPopup();
+    }
+
+    function showHospitals() {
+      clearMap();
+      L.marker(kuCoords)
+        .addTo(drawnLayers)
+        .bindPopup('<b>Kathmandu University</b>')
+        .openPopup();
+
+      hospitals.forEach((hospital) => {
+        const marker = L.marker(hospital.coords)
+          .addTo(drawnLayers)
+          .bindPopup(() => {
+            const container = document.createElement('div');
+            container.innerHTML = `<b>Hospital:</b> ${hospital.name}`;
+            const btn = document.createElement('button');
+            btn.className = 'route-btn';
+            btn.textContent = 'Show Route';
+            btn.onclick = () => {
+              drawRouteToPoint(hospital.coords, 'Kathmandu University', hospital.name);
+            };
+            container.appendChild(btn);
+            return container;
+          });
+      });
+
+      map.fitBounds(
+        L.featureGroup([...hospitals.map(h => L.marker(h.coords)), L.marker(kuCoords)]).getBounds(),
+        { padding: [50, 50] }
+      );
+    }
+
+    function showPharmacies() {
+      clearMap();
+      L.marker(kuCoords)
+        .addTo(drawnLayers)
+        .bindPopup('<b>Kathmandu University</b>')
+        .openPopup();
+
+      pharmacies.forEach((pharmacy) => {
+        const marker = L.marker(pharmacy.coords)
+          .addTo(drawnLayers)
+          .bindPopup(() => {
+            const container = document.createElement('div');
+            container.innerHTML = `<b>Pharmacy:</b> ${pharmacy.name}`;
+            const btn = document.createElement('button');
+            btn.className = 'route-btn';
+            btn.textContent = 'Show Route';
+            btn.onclick = () => {
+              drawRouteToPoint(pharmacy.coords, 'Kathmandu University', pharmacy.name);
+            };
+            container.appendChild(btn);
+            return container;
+          });
+      });
+
+      map.fitBounds(
+        L.featureGroup([...pharmacies.map(p => L.marker(p.coords)), L.marker(kuCoords)]).getBounds(),
+        { padding: [50, 50] }
+      );
+    }
+
+    function showNearbyHotels() {
+      clearMap();
+      L.marker(kuCoords)
+        .addTo(drawnLayers)
+        .bindPopup('<b>Kathmandu University</b>')
+        .openPopup();
+
+      hotels.forEach((hotel) => {
+        const marker = L.marker(hotel.coords)
+          .addTo(drawnLayers)
+          .bindPopup(() => {
+            const container = document.createElement('div');
+            container.innerHTML = `<b>Hotel:</b> ${hotel.name}`;
+            const btn = document.createElement('button');
+            btn.className = 'route-btn';
+            btn.textContent = 'Route Here';
+            btn.onclick = () => {
+              drawRouteToPoint(hotel.coords, 'Kathmandu University', hotel.name);
+            };
+            container.appendChild(btn);
+            return container;
+          });
+      });
+
+      map.fitBounds(
+        L.featureGroup([...hotels.map(h => L.marker(h.coords)), L.marker(kuCoords)]).getBounds(),
+        { padding: [50, 50] }
+      );
+    }
+
+    function drawRouteToPoint(destinationCoords, startName, destName) {
+      clearRoute();
+      routingControl = L.Routing.control({
+        waypoints: [
+          L.latLng(kuCoords[0], kuCoords[1]),
+          L.latLng(destinationCoords[0], destinationCoords[1]),
+        ],
+        lineOptions: {
+          styles: [{ color: 'red', weight: 5 }],
+        },
+        router: L.Routing.osrmv1({ profile: 'foot' }),
+        createMarker: function (i, wp) {
+          const labels = [startName, destName];
+          return L.marker(wp.latLng).bindPopup(labels[i]);
+        },
+        routeWhileDragging: false,
+        addWaypoints: false,
+        draggableWaypoints: false,
+        fitSelectedRoutes: true,
+        showAlternatives: false,
+      }).addTo(map);
+    }
+
+    function clearMap() {
+      drawnLayers.clearLayers();
+      clearRoute();
+    }
+
+    function clearRoute() {
+      if (routingControl) {
+        map.removeControl(routingControl);
+        routingControl = null;
       }
-
-      window.addEventListener('scroll', onScroll);
-      onScroll(); // Check on load in case already in view
-    });
+    }
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const skillCards = document.querySelectorAll('.skill-card');
-      const projectCards = document.querySelectorAll('.project-card');
+  function animateSkills() {
+    const skillBars = document.querySelectorAll('.skill-progress');
+    skillBars.forEach(bar => {
+      const percent = bar.getAttribute('data-percent');
+      const rect = bar.getBoundingClientRect();
+      const inView = rect.top <= (window.innerHeight || document.documentElement.clientHeight) - 100;
 
-      function checkVisibility() {
-        const windowHeight = window.innerHeight;
-
-        // Check visibility for skill cards
-        skillCards.forEach(card => {
-          const rect = card.getBoundingClientRect();
-          if (rect.top < windowHeight - 100) {
-            card.classList.add('visible');
-          }
-        });
-
-        // Check visibility for project cards
-        projectCards.forEach(card => {
-          const rect = card.getBoundingClientRect();
-          if (rect.top < windowHeight - 50) {
-            card.classList.add('visible');
-          }
-        });
+      if (inView && !bar.classList.contains('animated')) {
+        bar.classList.add('animated');
+        bar.style.width = percent;
       }
-
-      // Add scroll event listener
-      window.addEventListener('scroll', checkVisibility);
-      checkVisibility(); // Check on load in case already in view
     });
-  </script>
+  }
+
+  window.addEventListener('scroll', animateSkills);
+  window.addEventListener('load', animateSkills);
+  
+</script>
+
+<script>
+const header = document.querySelector('header');
+const spatialTools = document.getElementById('spatial-tools');
+const toggleBtn = document.getElementById('spatialToolsToggle');
+
+toggleBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (spatialTools.classList.contains('visible')) {
+    spatialTools.classList.remove('visible');
+  } else {
+    spatialTools.classList.add('visible');
+  }
+});
+
+window.addEventListener('scroll', () => {
+  if(window.scrollY > 50) {
+    // Hide header and spatial tools content when scrolled down
+    header.classList.add('hidden');
+    spatialTools.classList.remove('visible');
+  } else {
+    // Show header when scrolled back to top
+    header.classList.remove('hidden');
+  }
+});
+const pageContent = document.getElementById('page-content');
+const navLinks = document.querySelectorAll('header .nav-links a');
+
+navLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    // Hide all page content except header
+    pageContent.style.display = 'none';
+
+    // Optionally, you can change header content or show which nav item clicked
+    // For example, show only header title and nav bar
+  });
+});
+const logo = document.querySelector('.logo');
+logo.addEventListener('click', () => {
+  pageContent.style.display = 'block';
+});
+
+</script>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+</script>
+
 </body>
 </html>
