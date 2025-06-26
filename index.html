@@ -918,7 +918,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
   <script>
-    const map = L.map('map').setView([27.620, 85.538], 14);
+    const map = L.map('map').setView([27.620, 85.538], 16);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(map);
@@ -939,9 +939,9 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
 
     const hotels = [
-      { name: 'Himalayan Horizon Hotel', coords: [27.6215, 85.541] },
-      { name: 'Dhulikhel Lodge Resort', coords: [27.6195, 85.546] },
-      { name: 'Hotel Mirabel', coords: [27.6208, 85.5445] },
+      { name: 'Himalayan Horizon Hotel', coords: [27.62527778, 85.54888889] },
+      { name: 'Dhulikhel Lodge Resort', coords: [27.62166667, 85.55472222] },
+      { name: 'Hotel Mirabel', coords: [27.62333333 , 85.5525] },
     ];
 
     let drawnLayers = L.layerGroup().addTo(map);
